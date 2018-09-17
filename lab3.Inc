@@ -3,6 +3,12 @@ include WINDOWS.inc	; файл констант
 include user32.inc	; файл заголовківl user32.dll
 include kernel32.inc	; файл заголовківl kernel32.dll
 
+include RADbg.inc
+include debug.inc
+includelib DEBUG.LIB
+includelib raddebug.lib
+include masm32.inc
+
 include comdlg32.inc
 includelib comdlg32.lib
 
@@ -20,8 +26,10 @@ MEMSIZE	equ 1000000h  ; 16 Mb	; власна константа рівна значенню 16*220
 	pmem 		dd 0
 	filename2	db 'lab3.txt',0	
 	buf			db 260 dup (0)
-	
-	
+	mes			db 'Ви дійсно хочете видалити данний файл?',0
+	qq			dd 100 dup (0)
+	arg1		db 'Файл успішно видалено',0
+	arg2		db 'Видалення файлу скасовано',0
 	Created dd 0 
 	LastAccessed dd 0 
 	LastWrittenTo dd 0 

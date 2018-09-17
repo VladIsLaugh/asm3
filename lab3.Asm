@@ -48,25 +48,34 @@ main proc	;основна процедура
 	mov pmem, eax
 	invoke CreateFile, addr buf, GENERIC_READ or GENERIC_WRITE,FILE_SHARE_DELETE,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0
 	cmp eax, -1
-	je exit
+	jz endd
+	
 	mov hfile1,eax
 	invoke ReadFile,hfile1, pmem,4000h, addr readed,0
-	;invoke GetFileTime,hfile1, addr Created, addr LastAccessed, addr LastWrittenTo
-	;invoke MessageBox,0,addr Created,addr title1,MB_OK	
+	;invoke GetFileTime,hfile1, eax, addr LastAccessed, addr LastWrittenTo
+	
+	invoke MessageBox,0,addr mes,addr title1,MB_OKCANCEL
+	cmp qq, 1
+	jz ok
+	cmp eax, 2
+	jz cncl
+	
+	ok:
 	invoke DeleteFile, addr buf
+	invoke MessageBox,0,addr arg1,addr title1,MB_OK
+	jmp exit
 	
-	;invoke CreateFile, addr filename2, GENERIC_READ or GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL,0
-	;cmp eax, -1
-	;je exit
-	;mov hfile2,eax
+	cncl:
+	invoke MessageBox,0,addr arg2,addr title1,MB_OK
+	jmp exit
 	
-	;invoke WriteFile,hfile2, pmem, 4000h, addr readed,0
-	invoke MessageBox,0,pmem,addr title1,MB_OK	
 	
+	exit:
+	
+		
 	invoke CloseHandle,hfile1
-	;invoke CloseHandle,hfile2
 	invoke Mem_Free,pmem
-exit:
+endd:
 	ret		; вихід з процедури
 main endp	
 end Begin	;кінець програми
